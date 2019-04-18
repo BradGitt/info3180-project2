@@ -1,8 +1,9 @@
 /* Add your Application JavaScript */
 Vue.component('app-header', {
     template: `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-      <a class="navbar-brand" href="#">Lab 7</a>
+    <nav id="nav" class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <i id="fabig" class="fab fa-instagram"></i>
+      <a class="navbar-brand" href="#">Photogram</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -31,13 +32,32 @@ Vue.component('app-footer', {
     `
 });
 
-const Home = Vue.component('home', {
+const Home = Vue.component('/', {
    template: `
-    <div class="jumbotron">
-        <h1>Lab 7</h1>
-        <p class="lead">In this lab we will demonstrate VueJS working with Forms and Form Validation from Flask-WTF.</p>
+    <div class="row">
+      <div class="pic-column">
+      <img src="static/uploads/landingimg.jpg" alt="landing page image">
+      </div>
+      <div class="login-column">
+            <div class="login-heading-wrap">
+              <i id="fabig" class="fab fa-instagram"></i>
+              <i class="login-heading">Photogram</i>
+             </div>
+            <div class="intro"><p id="intro">Share photos of your favourite memories with friends,
+                family and the world</p>
+                </div>
+        <div class="button-wrapper">
+        <button class="register-button-h">Register</button>
+        <button class="login-button-h">Login</button>
+        <div>
+      </div>
+      
     </div>
+    
+    
+        
    `,
+   
     data: function() {
        return {}
     }
@@ -46,7 +66,6 @@ const Home = Vue.component('home', {
 const uploadForm = Vue.component('upload-form',{
     template: ` 
     <div class="upload">
-        <h2>Upload Form</h2>
         
         <div v-if='messageFlag' >
         
@@ -69,18 +88,44 @@ const uploadForm = Vue.component('upload-form',{
             </div>
             
         </div>
-        
-        <div class="form-inline d-flex justify-content">
-            <form id="uploadForm"  @submit.prevent="uploadPhoto" method="POST" enctype="multipart/form-data">
-                <div>
-                <div for="msg">Description </div>
-                <textarea class="form-control" rows="2"  cols="95" id="msg" name="description"></textarea><br></br>
-                <div for="pic">Photo Upload </div>
-                
-                <input type="file" name="photo" id="upload"/> </br>
-                </div></br>
-                <button class="btn btn-success" type="submit">Submit</button>
-            </form>
+        <p class="register" >Register</p>
+        <div class="form-wrapper">
+                <div class="form-inline d-flex justify-content">
+                <form id="uploadForm"  @submit.prevent="uploadPhoto" method="POST" enctype="multipart/form-data">
+                <label for="uname">Username</label>
+                <br>
+                <input v-model="uname" name="uname">
+                <br>
+                <label for="password">Password</label>
+                <br>
+                <input v-model="password" name="password">
+                <br>
+                <label for="fname">Firstname</label>
+                <br>
+                <input v-model="fname" name="fname">
+                <br>
+                <label for="lname">Lastname</label>
+                <br>
+                <input v-model="lname" name="lname">
+                <br>
+                <label for="uname">Email</label>
+                <br>
+                <input v-model="email" name="email">
+                <br>
+                <label for="uname">Location</label>
+                <br>
+                <input v-model="location" name="location">
+    
+                <label for="biography">Biography</label>
+                <input class="bioinput" v-model="biography" name="biography">
+                <p class="photolabel">Photo</p>
+                    <input type="file" name="upload" id="upload"/>
+                    <label for="upload" class="uploadlabel">Browse</label>
+                <br>
+                <br>
+                    <button class="register-button" type="submit">Register</button>
+                </form>
+            </div>
         </div>
     </div>
     `,
@@ -137,7 +182,52 @@ const uploadForm = Vue.component('upload-form',{
     }
 });
 
-
+const login = Vue.component('login',{
+    template: ` 
+    <div class="upload">
+        
+        <div v-if='messageFlag' >
+        
+            <div v-if="!errorFlag ">
+                <div class="alert alert-success" >
+                    <p>File Upload Successful</p>                
+                </div>
+            </div>
+            
+            
+            <div v-else >
+                <ul class="alert alert-danger">
+                    <li v-for="error in errorss">
+                        {{ error[0] }}<br>
+                    </li>
+                    <li v-for="error in errorss">
+                        {{ error[1] }}
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+        <p class="register" >Login</p>
+        <div class="login-form-wrapper">
+                <div class="form-inline d-flex justify-content">
+                <form id="uploadForm"  @submit.prevent="uploadPhoto" method="POST" enctype="multipart/form-data">
+                <label for="uname">Username</label>
+                <br>
+                <input v-model="uname" name="uname">
+                <br>
+                <label class="password">Password</label>
+                <br>
+                <input name="password">
+                <br>
+                    <button class="login-button" type="submit">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    `,
+    methods: {
+    }
+});
 
 const NotFound = Vue.component('not-found', {
     template: `
@@ -156,11 +246,13 @@ const router = new VueRouter({
     routes: [
         {path: "/", component: Home},
         // Put other routes here
-        { path: "/upload", component: uploadForm },
+        { path: "/register", component: uploadForm },
+         { path: "/login", component: login },
         // This is a catch all route in case none of the above matches
         {path: "*", component: NotFound}
     ]
 });
+
 
 // Instantiate our main Vue Instance
 let app = new Vue({
